@@ -1,1 +1,7 @@
-export const Login = () => null; // Adicionado apenas pro Git reconhecer a pasta pages
+export function Login() {
+  return (
+    <>
+      <h1>Login (Em Breve)</h1>
+    </>
+  );
+}
