@@ -1,0 +1,1 @@
+export const Button = () => null; // Adicionado apenas pro Git reconhecer a pasta components
