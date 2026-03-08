@@ -1,0 +1,1 @@
+export const Login = () => null; // Adicionado apenas pro Git reconhecer a pasta pages
