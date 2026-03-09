@@ -1,0 +1,1 @@
+export const protect = (req, res, next) => { next(); }; // TODO: Implementar middleware de proteção
