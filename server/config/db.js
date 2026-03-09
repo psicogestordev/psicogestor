@@ -1,0 +1,1 @@
+export const connectDB = async () => {}; // TODO: Implementar a conexão com o banco de dados
