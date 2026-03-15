@@ -13,7 +13,7 @@ function Navbar () {
                 <h1>Admin</h1>
             </div>
             
-            <nav className="flex flex-col p-5 h-full">
+            <nav className="flex flex-col gap-5 p-5 h-full">
                 <Link to='/'>Dashboard</Link>
                 <Link to='/patients'>Pacientes</Link>
                 <Link to='/sessions'>Sessões</Link>
