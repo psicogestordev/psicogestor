@@ -13,13 +13,17 @@ function Navbar () {
                 <h1>Admin</h1>
             </div>
             
-            <nav className="flex flex-col p-5">
+            <nav className="flex flex-col p-5 h-full">
                 <Link to='/'>Dashboard</Link>
                 <Link to='/patients'>Pacientes</Link>
                 <Link to='/sessions'>Sessões</Link>
                 <Link to='/finance'>Financeiro</Link>
                 <Link to='/settings'>Configurações</Link>
             </nav>
+
+            <div className="w-full p-5 self-end border-t border-sidebar-border">
+                <Link to='/login'>Sair da conta</Link>
+            </div>
         </aside>
     )
 }
