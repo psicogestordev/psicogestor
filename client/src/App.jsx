@@ -1,10 +1,19 @@
-function App() {
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Login } from './pages/Login'; 
+import Home from './pages/Home'
 
+function App() {
   return (
-    <>
-      <h1>Hello, world</h1>
-    </>
-  )
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={ <Home />} />
+        
+        <Route path="/login" element={<Login />} />
+        
+        {/* Vamo adicionar mais rotas conforme os cards avançarem glr */}
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;
