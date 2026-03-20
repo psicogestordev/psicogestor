@@ -1,0 +1,157 @@
+generator client {
+  provider   = "prisma-client-js"
+  engineType = "binary"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ==========================================
+// ENUMS
+// ==========================================
+
+enum PatientStatus {
+  ATIVO
+  INATIVO
+}
+
+enum FinancialStatus {
+  EM_DIA
+  PENDENTE
+  PARCIAL
+}
+
+enum AppointmentStatus {
+  AGENDADA
+  REALIZADA
+  FALTA
+  REMARCADA
+  CANCELADA
+}
+
+enum MeetProvider {
+  ZOOM
+  MEET
+}
+
+enum TransactionStatus {
+  PAGO
+  PENDENTE
+  PARCIAL
+}
+
+enum TransactionMethod {
+  PIX
+  TRANSFERENCIA
+  OUTROS
+}
+
+enum IntegrationProvider {
+  ZOOM
+  GOOGLE_MEET
+  GOOGLE_DRIVE
+  MERCADO_PAGO_PIX
+}
+
+enum IntegrationStatus {
+  CONECTADO
+  DESCONECTADO
+}
+
+// ==========================================
+// MODELS
+// ==========================================
+
+model User {
+  id           String        @id @default(uuid())
+  email        String        @unique
+  passwordHash String
+  name         String
+  crp          String?
+  phone        String?
+  avatarUrl    String?
+  theme        String?       @default("light")
+  createdAt    DateTime?     @default(now())
+  updatedAt    DateTime?     @updatedAt
+
+  // Relações inversas geradas pelo Prisma
+  patients     Patient[]
+  appointments Appointment[]
+  transactions Transaction[]
+  integrations Integration[]
+}
+
+model Patient {
+  id              String           @id @default(uuid())
+  userId          String
+  name            String
+  email           String?
+  phone           String?
+  status          PatientStatus?   @default(ATIVO)
+  financialStatus FinancialStatus? @default(EM_DIA)
+  avatar          String
+  color           String
+  googleDriveUrl  String?
+  createdAt       DateTime?        @default(now())
+  updatedAt       DateTime?        @updatedAt
+
+  // Relações
+  user            User             @relation(fields: [userId], references: [id])
+  appointments    Appointment[]
+  transactions    Transaction[]
+}
+
+model Appointment {
+  id           String             @id @default(uuid())
+  userId       String
+  patientId    String
+  startAt      DateTime
+  durationMin  Int?               @default(60)
+  type         String
+  status       AppointmentStatus? @default(AGENDADA)
+  paid         Boolean?           @default(false)
+  meetProvider MeetProvider
+  meetingUrl   String?
+  createdAt    DateTime?          @default(now())
+  updatedAt    DateTime?          @updatedAt
+
+  // Relações
+  user         User               @relation(fields: [userId], references: [id])
+  patient      Patient            @relation(fields: [patientId], references: [id])
+  transactions Transaction[]
+}
+
+model Transaction {
+  id            String             @id @default(uuid())
+  userId        String
+  patientId     String
+  appointmentId String?
+  date          DateTime
+  type          String
+  amountCents   Int
+  status        TransactionStatus
+  method        TransactionMethod?
+  createdAt     DateTime?          @default(now())
+  updatedAt     DateTime?          @updatedAt
+
+  // Relações
+  user          User               @relation(fields: [userId], references: [id])
+  patient       Patient            @relation(fields: [patientId], references: [id])
+  appointment   Appointment?       @relation(fields: [appointmentId], references: [id])
+}
+
+model Integration {
+  id          String              @id @default(uuid())
+  userId      String
+  provider    IntegrationProvider
+  status      IntegrationStatus?  @default(CONECTADO)
+  connectedAt DateTime?
+  metadata    Json?
+  createdAt   DateTime?           @default(now())
+  updatedAt   DateTime?           @updatedAt
+
+  // Relações
+  user        User                @relation(fields: [userId], references: [id])
+}
