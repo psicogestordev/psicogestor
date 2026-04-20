@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import prisma from '../config/db.js';
+import supabase from '../config/db.js';
 
 export const protect = async (req, res, next) => {
   try {
@@ -12,12 +12,13 @@ export const protect = async (req, res, next) => {
     const token = authHeader.split(' ')[1];
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    const user = await prisma.user.findUnique({
-      where: { id: decoded.id },
-      select: { id: true, name: true, email: true, avatarUrl: true }
-    });
+    const { data: user, error } = await supabase
+      .from('User')
+      .select('id, name, email, avatarUrl')
+      .eq('id', decoded.id)
+      .single();
 
-    if (!user) {
+    if (error || !user) {
       return res.status(401).json({ message: 'Usuário não encontrado.' });
     }
 
