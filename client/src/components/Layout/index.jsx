@@ -6,9 +6,9 @@ import Header from '../Header'
 function Layout() {
     return (
         <>
-            <Navbar/>
-            <Header/>
-            <Outlet/>
+            <Navbar />
+            <Header />
+            <Outlet />
         </>
     )
 }
