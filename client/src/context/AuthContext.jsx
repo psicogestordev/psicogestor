@@ -1,0 +1,1 @@
+import { createContext } from 'react'; export const AuthContext = createContext(); // Adicionado apenas pro Git reconhecer a pasta context
